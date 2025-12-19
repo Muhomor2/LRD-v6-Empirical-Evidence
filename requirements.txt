@@ -1,0 +1,33 @@
+# LRD v6 — Empirical Evidence Package
+# Python Dependencies
+
+# Core numerical computing
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+
+# Visualization
+matplotlib>=3.7
+
+# HTTP requests for API access
+requests>=2.31
+
+# Progress bars
+tqdm>=4.66
+
+# Statistical models
+statsmodels>=0.14
+
+# PhysioNet WFDB data access
+wfdb>=4.1
+
+# NCBI GenBank access
+biopython>=1.81
+
+# Testing (optional, for development)
+pytest>=7.0
+
+# Code quality (optional, for development)
+# black>=23.0
+# flake8>=6.0
+# mypy>=1.0

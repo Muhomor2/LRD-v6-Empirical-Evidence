@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use this software or derived results, please cite it as below."
+title: "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory"
+type: software
+authors:
+  - family-names: Chechelnitsky
+    given-names: Igor
+    orcid: "https://orcid.org/0009-0007-4607-1946"
+    affiliation: "Independent Researcher, Ashkelon, Israel"
+version: "6.0.0"
+date-released: "2025-12-19"
+license: "CC-BY-4.0"
+repository-code: "https://github.com/Muhomor2/LRD-v6-Empirical-Evidence"
+url: "https://zenodo.org/records/XXXXXXX"
+doi: "10.5281/zenodo.XXXXXXX"
+keywords:
+  - long-range dependence
+  - fractal memory
+  - Hurst exponent
+  - DFA
+  - detrended fluctuation analysis
+  - Bitcoin
+  - volatility clustering
+  - earthquakes
+  - HRV
+  - genomics
+  - time series analysis
+abstract: >-
+  Reproducible pipeline and manuscript demonstrating empirical 
+  long-range dependence / fractal memory across multiple domains
+  (Bitcoin/crypto volatility, earthquake activity, physiology/HRV, 
+  genomics) using DFA-2, bootstrap confidence intervals, and 
+  phase-randomized surrogate tests. This package extends LRD v5 
+  (Monte-Carlo validation on synthetic fGn) with real-world 
+  empirical evidence.
+references:
+  - type: software
+    authors:
+      - family-names: Chechelnitsky
+        given-names: Igor
+    title: "LRD v5 – Long-Range Dependence and Hurst Exponent Monte Carlo Validation"
+    year: 2025
+    doi: "10.5281/zenodo.17800770"

@@ -1,0 +1,125 @@
+OPEN SCIENCE LICENSE + ETHICAL RESTRICTION (OSL-ER) v1.0
+===========================================================
+
+This is a POLICY STATEMENT, not a standard OSI-approved software license.
+The actual license for this package is CC BY 4.0 (see LICENSE file).
+
+This document describes ethical guidelines for the use of this research.
+
+-------------------------------------------------------------------------------
+PURPOSE
+-------------------------------------------------------------------------------
+
+This policy aims to:
+1. Encourage open scientific use, replication, and peer review
+2. Promote responsible application of research findings
+3. Discourage harmful applications
+
+-------------------------------------------------------------------------------
+1. PERMITTED USE
+-------------------------------------------------------------------------------
+
+You may use, copy, modify, and redistribute these materials for:
+
+- Scientific research and replication studies
+- Education and teaching
+- Peer review and academic critique
+- Open dissemination with proper attribution
+- Commercial applications that benefit society
+- Integration into AI/ML systems for beneficial purposes
+
+-------------------------------------------------------------------------------
+2. ATTRIBUTION
+-------------------------------------------------------------------------------
+
+You must:
+- Credit the author(s) and cite the original publication
+- Include the DOI when referencing this work
+- Cite the companion package (LRD v5) when appropriate
+
+See CITATION.cff for proper citation format.
+
+-------------------------------------------------------------------------------
+3. ETHICAL GUIDELINES
+-------------------------------------------------------------------------------
+
+We ask that you DO NOT use these materials to:
+
+- Develop systems intended to cause harm to people
+- Support harassment, stalking, or discrimination
+- Facilitate unauthorized surveillance or exploitation
+- Create tools primarily designed for deception or coercion
+- Manipulate financial markets in ways that harm others
+- Undermine democratic institutions or processes
+
+-------------------------------------------------------------------------------
+4. AI AND AUTOMATED SYSTEMS
+-------------------------------------------------------------------------------
+
+If integrating this research into AI/ML systems:
+
+- Consider the potential for both beneficial and harmful applications
+- Implement appropriate safeguards against misuse
+- Be transparent about the limitations of LRD-based predictions
+- Do not overstate the predictive power of these methods
+- Consider the impact on market stability and fairness
+
+-------------------------------------------------------------------------------
+5. FINANCIAL APPLICATIONS
+-------------------------------------------------------------------------------
+
+If using for financial applications:
+
+- This research demonstrates statistical properties, not trading signals
+- Past patterns do not guarantee future behavior
+- Markets are complex adaptive systems with regime changes
+- Use appropriate risk management and diversification
+- Consider the social impact of algorithmic trading strategies
+
+-------------------------------------------------------------------------------
+6. DATA AND THIRD-PARTY CONTENT
+-------------------------------------------------------------------------------
+
+- Third-party datasets are governed by their own licenses
+- This repository does not claim rights over third-party data
+- Do not redistribute third-party data unless you have explicit permission
+- Always check and comply with data source licenses
+
+-------------------------------------------------------------------------------
+7. DISCLAIMER
+-------------------------------------------------------------------------------
+
+This work is provided "as is" without warranty of any kind.
+
+The author(s) are not liable for any damages arising from use of these 
+materials, including but not limited to financial losses, failed 
+experiments, or misapplication of methods.
+
+This research describes statistical properties observed in historical data.
+It does not provide investment advice or guarantee future results.
+
+-------------------------------------------------------------------------------
+8. ENFORCEABILITY NOTE
+-------------------------------------------------------------------------------
+
+Ethical restrictions may not be legally enforceable in all jurisdictions.
+This document represents a good-faith research policy and ethical guideline.
+
+We trust that users of scientific research will act responsibly and 
+consider the broader impact of their work on society.
+
+-------------------------------------------------------------------------------
+AUTHOR
+-------------------------------------------------------------------------------
+
+Igor Chechelnitsky
+Independent Researcher
+Ashkelon, Israel
+
+Year: 2025
+
+-------------------------------------------------------------------------------
+VERSION HISTORY
+-------------------------------------------------------------------------------
+
+v1.0 (2025-12-19): Initial release with LRD v6

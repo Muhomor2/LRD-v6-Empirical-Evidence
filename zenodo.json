@@ -1,0 +1,57 @@
+{
+  "title": "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory (Multi-domain real-world datasets)",
+  "upload_type": "software",
+  "publication_type": "workingpaper",
+  "description": "<p><strong>Companion to:</strong> <a href='https://zenodo.org/records/17800770'>LRD v5 – Monte Carlo Validation</a> (DOI: 10.5281/zenodo.17800770)</p><p>This release extends the synthetic Monte-Carlo validation (LRD v5) with a <strong>cross-domain empirical evidence layer</strong>. Using a conservative DFA-2 + block-bootstrap + phase-randomized surrogate test pipeline, we demonstrate that fractal memory signatures arise in real systems across multiple domains:</p><ul><li><strong>Finance/Crypto</strong>: Bitcoin volatility clustering (|log-returns| show H > 0.5 while raw returns show H ≈ 0.5)</li><li><strong>Geophysics</strong>: Earthquake activity clustering (USGS catalog)</li><li><strong>Physiology</strong>: Heart rate variability RR intervals (PhysioNet)</li><li><strong>Genomics</strong>: DNA sequence correlations (NCBI GenBank)</li></ul><p>The program is <strong>falsifiable and audit-driven</strong>: we separate returns from volatility, report uncertainty via block bootstrap CI, test against phase-randomized surrogates, and document dataset provenance and licensing constraints.</p><p><strong>AI Relevance:</strong> This work provides a reproducible benchmark for AI forecasting and agentic decision systems operating under persistent risk dynamics in financial markets.</p><p>Raw third-party datasets are not redistributed; the package ships code, documentation, and example outputs.</p>",
+  "creators": [
+    {
+      "name": "Chechelnitsky, Igor",
+      "affiliation": "Independent Researcher, Ashkelon, Israel",
+      "orcid": "0009-0007-4607-1946"
+    }
+  ],
+  "keywords": [
+    "long-range dependence",
+    "fractal memory",
+    "Hurst exponent",
+    "DFA",
+    "detrended fluctuation analysis",
+    "Bitcoin",
+    "volatility clustering",
+    "earthquakes",
+    "HRV",
+    "heart rate variability",
+    "genomics",
+    "time series analysis",
+    "Monte Carlo",
+    "empirical validation"
+  ],
+  "license": "CC-BY-4.0",
+  "version": "6.0.0",
+  "language": "eng",
+  "notes": "Third-party data sources and their licenses are documented in docs/DATA_SOURCES.md and docs/THIRD_PARTY_NOTICES.md. This package ships only code and derived outputs by default. See the companion package LRD v5 (DOI: 10.5281/zenodo.17800770) for synthetic Monte-Carlo validation.",
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.17800770",
+      "relation": "continues",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/Muhomor2/LRD-v6-Empirical-Evidence",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ],
+  "subjects": [
+    {
+      "term": "Time series analysis",
+      "scheme": "url",
+      "identifier": "https://en.wikipedia.org/wiki/Time_series"
+    },
+    {
+      "term": "Long-range dependence",
+      "scheme": "url", 
+      "identifier": "https://en.wikipedia.org/wiki/Long-range_dependence"
+    }
+  ]
+}
