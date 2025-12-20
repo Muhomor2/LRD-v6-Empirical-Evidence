@@ -1,6 +1,6 @@
 # LRD v6 — Empirical Evidence for Long-Range Dependence / Fractal Memory
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17993213.svg)](https://doi.org/10.5281/zenodo.17993213)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 **Companion to**: [LRD v5 – Monte Carlo Validation](https://zenodo.org/records/17800770) (DOI: 10.5281/zenodo.17800770)
