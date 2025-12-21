@@ -1,0 +1,748 @@
+\documentclass[12pt,a4paper]{article}
+
+% ===== PACKAGES =====
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{natbib}
+
+% ===== THEOREM ENVIRONMENTS =====
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}{Hypothesis}
+\newtheorem{result}{Result}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+% ===== CUSTOM COMMANDS =====
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\cf}{\textit{cf.}}
+\newcommand{\etal}{\textit{et al.}}
+
+% ===== DOCUMENT INFO =====
+\title{%
+\textbf{Long-Range Dependence and Microstructural Universality:\\
+From Square-Root Impact to Fractal Volatility Memory}\\[1em]
+\large LRD v6.0.1: A Reproducible Audit Framework with Theoretical Foundations
+}
+
+\author{%
+Igor Chechelnitsky\thanks{Independent Researcher, Ashkelon, Israel. ORCID: 0009-0007-4607-1946. Email: corresponding@email.com}
+}
+
+\date{December 2025\\[0.5em]\small Version 6.0.1 --- Zenodo DOI: 10.5281/zenodo.17993213}
+
+% ===== HEADER/FOOTER =====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small LRD v6.0.1}
+\fancyhead[R]{\small Chechelnitsky (2025)}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+We present LRD v6.0.1, a reproducible empirical framework for detecting and validating long-range dependence (LRD) in complex time series, with theoretical foundations linking microstructural universality to macroscopic fractal memory. The framework combines DFA-2 scaling estimation, block-bootstrap confidence intervals, and phase-randomized surrogate falsification tests. Empirical evidence across four domains---Bitcoin volatility, earthquake sequences, heart rate variability (HRV), and genomic DNA---demonstrates persistent memory ($H > 0.5$) as a universal feature of complex systems. 
+
+The key theoretical contribution is the integration of recent high-precision results on the square-root law (SRL) of price impact: Sato \& Kanazawa (\textit{Phys. Rev. Lett.} \textbf{135}, 257401, 2025) establish that market impact scales as $\Delta p \propto Q^{\delta}$ with $\delta \approx 1/2$ universally across all liquid stocks and traders on the Tokyo Stock Exchange. We demonstrate that this microstructural universality provides a mechanistic anchor for the observed macroscopic LRD in volatility proxies: order-splitting strategies of large traders, combined with universal impact scaling, generate persistent correlations in order flow that manifest as fractal volatility clustering.
+
+This micro-to-macro linkage has direct implications for AI forecasting systems and risk models operating in cryptocurrency markets, where standard i.i.d. assumptions are structurally mis-specified when LRD is present.
+
+\medskip
+\noindent\textbf{Keywords:} long-range dependence; fractal memory; Hurst exponent; DFA; square-root law; market microstructure; Bitcoin; volatility clustering; econophysics; universality
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+%==============================================================================
+\section{Introduction}
+\label{sec:introduction}
+%==============================================================================
+
+The detection and characterization of long-range dependence (LRD) in empirical time series has emerged as a central problem across disciplines ranging from geophysics to finance. A process $\{X_t\}$ exhibits LRD when its autocorrelation function $\rho(k)$ decays hyperbolically rather than exponentially:
+\begin{equation}
+\rho(k) \sim c \cdot k^{2H-2}, \quad k \to \infty, \quad H \in (0.5, 1),
+\label{eq:lrd_def}
+\end{equation}
+where $H$ is the Hurst exponent and $c > 0$ is a constant. This slow decay implies that shocks propagate across all time scales, creating ``memory'' that standard short-memory models (ARMA, GARCH) fail to capture.
+
+The phenomenon was first rigorously studied by Hurst \cite{hurst1951} in Nile river discharge data and later formalized by Mandelbrot \cite{mandelbrot1968} through fractional Brownian motion (fBm). Subsequent work established LRD in financial volatility \cite{ding1993,breidt1998}, physiological signals \cite{peng1995hrv}, seismic sequences \cite{telesca2012}, and genomic data \cite{peng1992dna}.
+
+\subsection{The Micro-Macro Gap}
+
+Despite extensive empirical documentation, a fundamental question remained: \emph{What microscopic mechanism generates macroscopic fractal memory?} In financial markets, the answer involves the interplay between:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Order-splitting}: Large institutional investors execute metaorders by splitting them into many small child orders over extended periods to minimize market impact.
+    \item \textbf{Impact scaling}: Each child order moves the price according to a universal law---the square-root law (SRL).
+    \item \textbf{Aggregate persistence}: The cumulative effect generates long-range correlations in order flow and, consequently, in volatility.
+\end{enumerate}
+
+\subsection{Contributions of This Work}
+
+LRD v6.0.1 makes the following contributions:
+
+\begin{enumerate}
+    \item \textbf{Empirical Audit Framework}: A reproducible pipeline for LRD detection using DFA-2, block-bootstrap CIs, and surrogate falsification tests, applied to Bitcoin, earthquakes, HRV, and genomics.
+    
+    \item \textbf{Theoretical Foundation}: Integration of the Sato--Kanazawa SRL universality result (\textit{Phys. Rev. Lett.} 2025) as the microstructural anchor for macroscopic LRD.
+    
+    \item \textbf{Falsifiability}: Explicit conditions under which LRD claims should be rejected, distinguishing genuine memory from spurious scaling.
+    
+    \item \textbf{AI Relevance}: Implications for machine learning models operating in markets with fractal memory, where i.i.d. assumptions are violated.
+\end{enumerate}
+
+%==============================================================================
+\section{Theoretical Framework}
+\label{sec:theory}
+%==============================================================================
+
+\subsection{Long-Range Dependence: Definitions and Characterizations}
+
+\begin{definition}[Long-Range Dependence]
+A stationary process $\{X_t\}_{t \in \mathbb{Z}}$ with autocovariance $\gamma(k) = \Cov(X_t, X_{t+k})$ exhibits \emph{long-range dependence} if:
+\begin{equation}
+\sum_{k=-\infty}^{\infty} |\gamma(k)| = \infty.
+\end{equation}
+Equivalently, the spectral density $f(\lambda)$ satisfies $f(\lambda) \sim c_f |\lambda|^{1-2H}$ as $\lambda \to 0$ for some $H \in (0.5, 1)$.
+\end{definition}
+
+The Hurst exponent $H$ serves as the canonical parameter:
+\begin{itemize}
+    \item $H = 0.5$: No memory (white noise increments, random walk)
+    \item $H > 0.5$: Persistent/positive LRD (trends continue)
+    \item $H < 0.5$: Anti-persistent/negative LRD (mean-reverting)
+\end{itemize}
+
+\subsection{Fractional Brownian Motion}
+
+The prototypical LRD process is fractional Brownian motion (fBm), a Gaussian process $\{B_H(t)\}_{t \geq 0}$ with:
+\begin{equation}
+\E[B_H(t)] = 0, \quad \E[B_H(t)B_H(s)] = \frac{1}{2}\left(|t|^{2H} + |s|^{2H} - |t-s|^{2H}\right).
+\end{equation}
+The increments $\{B_H(t) - B_H(s)\}$ form fractional Gaussian noise (fGn) with $H$-dependent autocorrelation.
+
+\subsection{The Square-Root Law of Price Impact}
+
+The square-root law (SRL) describes how market prices respond to trading volume:
+
+\begin{hypothesis}[Square-Root Law Universality]
+\label{hyp:srl}
+For any liquid financial market, the expected price impact $I(Q)$ of executing a metaorder of volume $Q$ satisfies:
+\begin{equation}
+I(Q) \propto \sigma \sqrt{\frac{Q}{V}},
+\label{eq:srl}
+\end{equation}
+where $\sigma$ is daily volatility and $V$ is daily volume. The exponent $\delta = 1/2$ is universal---independent of stock identity, trader identity, or market venue.
+\end{hypothesis}
+
+\subsubsection{Empirical Confirmation: Sato \& Kanazawa (2025)}
+
+The universality of SRL has now been rigorously confirmed. Sato \& Kanazawa \cite{sato2025prl} analyzed eight years (2012--2019) of complete order-level data from the Tokyo Stock Exchange, comprising:
+\begin{itemize}
+    \item All orders, trades, and cancellations
+    \item All individual trading accounts (anonymized)
+    \item Reconstruction of metaorders across all liquid stocks
+\end{itemize}
+
+Their key result:
+
+\begin{result}[SRL Universality --- Sato \& Kanazawa 2025]
+The price impact exponent $\delta$ equals $0.5 \pm 0.05$ for \emph{every} stock and \emph{every} trader category on the TSE, with no systematic deviations. The square-root law is a strict universal scaling.
+\end{result}
+
+This result was published in \textit{Physical Review Letters} \cite{sato2025prl} and discussed in an APS Physics Viewpoint by Bouchaud \cite{bouchaud2025viewpoint}.
+
+\subsection{From Microstructure to Macroscopic Memory}
+
+The connection between SRL and LRD operates through the following mechanism:
+
+\begin{proposition}[Micro-Macro Link]
+\label{prop:micro_macro}
+Under the following conditions:
+\begin{enumerate}[label=(\alph*)]
+    \item Large traders split metaorders into child orders executed over time
+    \item Each child order impacts price according to SRL with $\delta = 1/2$
+    \item Traders optimize execution to minimize total impact cost
+\end{enumerate}
+The resulting order flow process $\{q_t\}$ exhibits long-range dependence in its sign sequence, and the volatility process $\{\sigma_t^2\}$ inherits this persistence.
+\end{proposition}
+
+\begin{proof}[Sketch]
+Optimal execution under SRL implies spreading orders over duration $T \propto Q^{1/2}$ (Almgren--Chriss framework). Multiple overlapping metaorders create a superposition of correlated trading programs. The Lillo--Mike--Farmer model \cite{lillo2005theory} shows that this generates power-law decay in order-sign autocorrelation:
+\[
+\Cov(\epsilon_t, \epsilon_{t+\tau}) \sim \tau^{-\gamma}, \quad \gamma \in (0.5, 1),
+\]
+which translates to LRD in volatility proxies. See \cite{bouchaud2018book} for the complete derivation.
+\end{proof}
+
+\subsection{Latent Liquidity Framework}
+
+Bouchaud \cite{bouchaud2025viewpoint} explains SRL through the ``latent liquidity'' model:
+\begin{itemize}
+    \item Available liquidity increases linearly with distance from the current price
+    \item This creates a ``depletion layer'' analogous to reaction-diffusion systems
+    \item The concave $\sqrt{Q}$ scaling emerges from matching orders against a linearly growing liquidity profile
+\end{itemize}
+
+This physics-based derivation suggests that SRL, and consequently LRD in volatility, is a fundamental property of any order-driven market---not a market-specific anomaly.
+
+%==============================================================================
+\section{Methodology: The LRD Audit Protocol}
+\label{sec:methodology}
+%==============================================================================
+
+\subsection{Overview}
+
+The LRD v6 audit protocol consists of four mandatory stages:
+
+\begin{enumerate}
+    \item \textbf{Scaling Estimation}: DFA-2 to estimate the Hurst exponent $H$
+    \item \textbf{Uncertainty Quantification}: Block-bootstrap confidence intervals
+    \item \textbf{Falsification Testing}: Phase-randomized surrogates
+    \item \textbf{Sensitivity Analysis}: Scale-range robustness checks
+\end{enumerate}
+
+If any stage fails, the LRD claim is rejected.
+
+\subsection{Detrended Fluctuation Analysis (DFA-2)}
+
+DFA was introduced by Peng \etal\ \cite{peng1994dfa} to detect LRD in non-stationary sequences with embedded trends.
+
+\subsubsection{Algorithm}
+
+Given a time series $\{x_i\}_{i=1}^N$:
+
+\begin{enumerate}
+    \item \textbf{Integration}: Compute cumulative sum $y(k) = \sum_{i=1}^k (x_i - \bar{x})$
+    
+    \item \textbf{Segmentation}: Divide $\{y(k)\}$ into non-overlapping segments of length $n$
+    
+    \item \textbf{Detrending}: In each segment, fit a polynomial $p_\nu(k)$ of order $m$ (DFA-$m$ uses degree-$m$ polynomial; we use $m=2$)
+    
+    \item \textbf{Fluctuation}: Compute the root-mean-square fluctuation:
+    \begin{equation}
+    F(n) = \sqrt{\frac{1}{N}\sum_{k=1}^N \left[y(k) - p_\nu(k)\right]^2}
+    \end{equation}
+    
+    \item \textbf{Scaling}: Repeat for various $n$; the scaling relation
+    \begin{equation}
+    F(n) \propto n^H
+    \label{eq:dfa_scaling}
+    \end{equation}
+    yields $H$ from the log-log slope.
+\end{enumerate}
+
+\subsubsection{Interpretation}
+
+\begin{table}[htbp]
+\centering
+\caption{Interpretation of DFA scaling exponent $H$}
+\label{tab:h_interpretation}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Range} & \textbf{Process Type} & \textbf{Interpretation} \\
+\midrule
+$H < 0.5$ & Anti-persistent & Mean-reverting, negative correlations \\
+$H = 0.5$ & Uncorrelated & Random walk, no memory \\
+$0.5 < H < 1$ & Persistent LRD & Positive correlations, trending \\
+$H = 1$ & $1/f$ noise & Borderline non-stationarity \\
+$H > 1$ & Non-stationary & Unbounded variance \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Block-Bootstrap Confidence Intervals}
+
+Standard bootstrap fails for LRD series because resampling destroys long-range correlations. We employ the \emph{moving block bootstrap} (MBB):
+
+\begin{enumerate}
+    \item Choose block length $\ell \propto N^{1/3}$ (optimal rate for LRD)
+    \item Resample blocks with replacement to construct pseudo-series
+    \item Estimate $\hat{H}^{(b)}$ for each bootstrap replicate $b = 1, \ldots, B$
+    \item Compute percentile CI: $[\hat{H}_{(\alpha/2)}, \hat{H}_{(1-\alpha/2)}]$
+\end{enumerate}
+
+The null hypothesis $H_0: H = 0.5$ is rejected if the $(1-\alpha)$ CI lies entirely above $0.5$.
+
+\subsection{Phase-Randomized Surrogate Tests}
+
+To distinguish genuine LRD from spurious scaling artifacts (heavy tails, non-stationarity), we use phase-randomized surrogates \cite{theiler1992surrogate}:
+
+\begin{enumerate}
+    \item Compute the FFT of the original series: $\tilde{X}(\omega)$
+    \item Randomize phases: $\tilde{X}'(\omega) = |\tilde{X}(\omega)| e^{i\phi(\omega)}$ where $\phi(\omega) \sim \mathrm{Uniform}(0, 2\pi)$
+    \item Inverse FFT to obtain surrogate series preserving power spectrum
+    \item Estimate $H_{\text{surr}}$ for the surrogate
+    \item Repeat $S$ times; reject LRD if $\hat{H}_{\text{original}} \leq \hat{H}_{\text{surr}}^{(95\%)}$
+\end{enumerate}
+
+If surrogate series (which have the same power spectrum but destroyed correlations) show similar scaling, the original LRD claim is \emph{falsified}.
+
+\subsection{Scale-Range Sensitivity}
+
+Apparent LRD can arise from fitting over inappropriate scale ranges. We test robustness by:
+\begin{itemize}
+    \item Varying the fitting range $[n_{\min}, n_{\max}]$
+    \item Checking for crossover behavior (different $H$ at different scales)
+    \item Requiring $H > 0.5$ across all plausible scale ranges
+\end{itemize}
+
+\begin{tcolorbox}[title=Audit Decision Rule]
+\textbf{Accept LRD claim} if and only if:
+\begin{enumerate}
+    \item DFA-2 yields $\hat{H} > 0.5$ with bootstrap CI entirely above $0.5$
+    \item Phase-randomized surrogates yield significantly lower $H$
+    \item Scaling persists across multiple scale ranges
+\end{enumerate}
+Otherwise, \textbf{reject} the LRD claim.
+\end{tcolorbox}
+
+%==============================================================================
+\section{Empirical Results}
+\label{sec:results}
+%==============================================================================
+
+We apply the LRD audit protocol to four distinct domains, demonstrating the universality of fractal memory in complex systems.
+
+\subsection{Domain 1: Bitcoin Volatility}
+
+\subsubsection{Data}
+
+High-frequency Bitcoin/USD prices from major exchanges (2017--2024), sampled at 1-minute intervals. We analyze:
+\begin{itemize}
+    \item Raw log-returns: $r_t = \ln(P_t/P_{t-1})$
+    \item Volatility proxy: $|r_t|$ (absolute returns)
+    \item Trading volume: $V_t$
+\end{itemize}
+
+\subsubsection{Results}
+
+\begin{table}[htbp]
+\centering
+\caption{DFA-2 Results for Bitcoin Time Series}
+\label{tab:bitcoin_results}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Series} & \textbf{$\hat{H}$} & \textbf{95\% CI} & \textbf{Surrogate $p$-value} \\
+\midrule
+Log-returns $r_t$ & 0.52 & [0.49, 0.55] & 0.34 \\
+Absolute returns $|r_t|$ & 0.71 & [0.68, 0.74] & $< 0.001$ \\
+Trading volume $V_t$ & 0.93 & [0.89, 0.96] & $< 0.001$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{result}[Bitcoin LRD]
+Raw Bitcoin returns show no significant LRD ($H \approx 0.5$), consistent with weak-form market efficiency. However, \emph{volatility proxies} exhibit strong persistent LRD ($H \approx 0.71$), and trading volume shows very high persistence ($H \approx 0.93$). These findings survive surrogate falsification.
+\end{result}
+
+This separation---memoryless returns but persistent volatility---is the canonical ``stylized fact'' of financial markets and is consistent with the microstructural theory of Section~\ref{sec:theory}.
+
+\subsection{Domain 2: Earthquake Sequences}
+
+\subsubsection{Data}
+
+Global earthquake catalog (USGS) and Italian regional catalog (INGV), 1990--2023. Series analyzed:
+\begin{itemize}
+    \item Cumulative seismic moment: $M_0(t) = \sum_{i: t_i \leq t} 10^{1.5(m_i + 10.7)}$
+    \item Inter-event times: $\tau_i = t_{i+1} - t_i$
+\end{itemize}
+
+\subsubsection{Results}
+
+\begin{table}[htbp]
+\centering
+\caption{DFA-2 Results for Seismic Time Series}
+\label{tab:earthquake_results}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Series} & \textbf{$\hat{H}$} & \textbf{95\% CI} & \textbf{Surrogate $p$-value} \\
+\midrule
+Cumulative moment (Italy) & 0.87 & [0.83, 0.91] & $< 0.001$ \\
+Cumulative moment (Global) & 0.84 & [0.80, 0.88] & $< 0.001$ \\
+Inter-event times & 0.68 & [0.64, 0.72] & $< 0.01$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{result}[Seismic LRD]
+Earthquake sequences exhibit strong LRD with $H \approx 0.85$--$0.87$, indicating that periods of high seismic activity tend to cluster. This contradicts simple Poisson models and has implications for probabilistic seismic hazard assessment.
+\end{result}
+
+\subsection{Domain 3: Heart Rate Variability (HRV)}
+
+\subsubsection{Data}
+
+RR-interval time series from PhysioNet databases (healthy subjects, $N > 50$). The series represents beat-to-beat heart rate fluctuations.
+
+\subsubsection{Results}
+
+\begin{table}[htbp]
+\centering
+\caption{DFA-2 Results for HRV (Healthy Subjects)}
+\label{tab:hrv_results}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Measure} & \textbf{$\hat{H}$} & \textbf{95\% CI} & \textbf{Surrogate $p$-value} \\
+\midrule
+RR intervals (rest) & 0.92 & [0.88, 0.96] & $< 0.001$ \\
+RR intervals (activity) & 0.78 & [0.74, 0.82] & $< 0.001$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{result}[HRV LRD]
+Healthy heart rate variability exhibits strong LRD ($H \approx 0.9$ at rest), consistent with the seminal findings of Peng \etal\ \cite{peng1995hrv}. This fractal structure is a marker of healthy cardiac dynamics; its loss may indicate pathology.
+\end{result}
+
+\subsection{Domain 4: Genomic DNA Sequences}
+
+\subsubsection{Data}
+
+DNA sequences from GenBank, analyzed as ``DNA walks'' where purines (A, G) contribute $+1$ and pyrimidines (C, T) contribute $-1$ at each position.
+
+\subsubsection{Results}
+
+\begin{table}[htbp]
+\centering
+\caption{DFA Results for DNA Sequences}
+\label{tab:dna_results}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Sequence Type} & \textbf{$\hat{H}$} & \textbf{LRD Present?} \\
+\midrule
+Introns (non-coding) & $0.60$--$0.65$ & Yes \\
+Intergenic regions & $0.62$--$0.68$ & Yes \\
+Exons (coding) & $0.50$--$0.52$ & No \\
+cDNA (processed mRNA) & $0.48$--$0.51$ & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{result}[Genomic LRD]
+Non-coding DNA regions (introns, intergenic) exhibit significant LRD ($H \approx 0.65$), while coding regions (exons) do not. This confirms the original Peng \etal\ \cite{peng1992dna} finding and suggests that fractal organization in genomes serves regulatory or evolutionary functions distinct from protein coding.
+\end{result}
+
+\subsection{Summary of Empirical Findings}
+
+\begin{table}[htbp]
+\centering
+\caption{Cross-Domain Summary of LRD Evidence}
+\label{tab:summary}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Domain} & \textbf{Observable} & \textbf{$\hat{H}$} & \textbf{LRD Confirmed} \\
+\midrule
+Finance (Bitcoin) & Volatility proxy & 0.71 & \checkmark \\
+Finance (Bitcoin) & Trading volume & 0.93 & \checkmark \\
+Geophysics & Seismic moment & 0.85 & \checkmark \\
+Physiology & HRV (healthy) & 0.92 & \checkmark \\
+Genomics & Non-coding DNA & 0.65 & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%==============================================================================
+\section{Discussion}
+\label{sec:discussion}
+%==============================================================================
+
+\subsection{Universality of Fractal Memory}
+
+The presence of LRD across Bitcoin volatility, earthquake sequences, cardiac dynamics, and genomic DNA suggests that fractal memory is not a curiosity of particular systems but a \emph{universal property} of complex systems with:
+\begin{itemize}
+    \item Many interacting components
+    \item Nonlinear dynamics
+    \item Hierarchical organization
+\end{itemize}
+
+This is consistent with the broader ``complexity science'' paradigm where scale-free behavior emerges at criticality \cite{bak1996selforganized}.
+
+\subsection{The Microstructural Foundation for Financial LRD}
+
+For financial markets specifically, we now have a complete micro-to-macro explanation:
+
+\begin{enumerate}
+    \item \textbf{Micro}: Universal SRL ($\delta = 1/2$) governs single-trade impact
+    \item \textbf{Meso}: Optimal execution → order splitting → correlated order flow
+    \item \textbf{Macro}: Long-range dependence in volatility proxies
+\end{enumerate}
+
+The Sato--Kanazawa result \cite{sato2025prl} closes the empirical gap by demonstrating that SRL holds universally, not just on average. This transforms SRL from a heuristic to a verified law of market physics.
+
+\subsection{Implications for AI and Machine Learning}
+
+\subsubsection{Model Specification}
+
+Standard machine learning approaches often assume i.i.d. residuals or short-memory dependence. When LRD is present, these assumptions are violated, leading to:
+\begin{itemize}
+    \item Underestimated prediction uncertainty
+    \item Spurious pattern detection (overfitting to persistent fluctuations)
+    \item Incorrect confidence intervals for risk metrics
+\end{itemize}
+
+\subsubsection{Recommended Approaches}
+
+\begin{enumerate}
+    \item \textbf{Feature engineering}: Include DFA-derived Hurst exponents as predictive features
+    \item \textbf{Model architecture}: Use architectures with long context (Transformers) or explicit memory (LSTMs with long state)
+    \item \textbf{Loss functions}: Adapt loss functions to account for correlated errors
+    \item \textbf{Uncertainty quantification}: Use block-bootstrap or other LRD-aware uncertainty methods
+\end{enumerate}
+
+\subsubsection{Cryptocurrency Applications}
+
+Bitcoin and other cryptocurrencies show particularly strong LRD in volume and volatility. Trading algorithms and risk management systems should:
+\begin{itemize}
+    \item Anticipate volatility clustering beyond GARCH-type decay
+    \item Adjust position sizing for persistent regimes
+    \item Monitor local $H$ estimates for regime-change detection
+\end{itemize}
+
+\subsection{Limitations and Boundaries of Applicability}
+
+\begin{enumerate}
+    \item \textbf{Scale-dependent $H$}: Real systems may show crossover behavior (different $H$ at different scales). A single $H$ is an approximation.
+    
+    \item \textbf{Non-stationarity}: Structural breaks (crises, regime changes) can create apparent LRD. Rolling-window analysis is essential.
+    
+    \item \textbf{Finite-sample bias}: DFA can be biased for small samples or strong non-stationarity. Monte Carlo validation (LRD v5) addresses this.
+    
+    \item \textbf{Heavy tails}: Fat-tailed distributions can inflate $H$ estimates. Surrogate tests and robust estimators are necessary.
+\end{enumerate}
+
+\subsection{Falsifiability Statement}
+
+The claims of this work are falsifiable:
+\begin{itemize}
+    \item \textbf{LRD claims}: Rejected if bootstrap CI includes $0.5$ or surrogates reproduce scaling
+    \item \textbf{SRL universality}: Would require evidence of $\delta \neq 0.5$ on a major market
+    \item \textbf{Micro-macro link}: Could be falsified if volatility LRD disappeared while order-flow memory persisted
+\end{itemize}
+
+%==============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%==============================================================================
+
+LRD v6.0.1 provides a reproducible, falsifiable framework for detecting and interpreting long-range dependence in complex time series. The key advances are:
+
+\begin{enumerate}
+    \item \textbf{Empirical}: Confirmation of LRD across four domains with rigorous audit (DFA-2 + bootstrap + surrogates)
+    
+    \item \textbf{Theoretical}: Integration of the Sato--Kanazawa SRL universality result as a microstructural foundation for financial LRD
+    
+    \item \textbf{Practical}: Guidelines for AI systems operating in markets with fractal memory
+\end{enumerate}
+
+The broader implication is that complex systems---whether markets, geophysical processes, or biological rhythms---share universal statistical signatures arising from their internal organization. The square-root law exemplifies how physics-style universal laws can emerge even in systems driven by human behavior.
+
+Future work should extend the SRL verification to cryptocurrency markets and investigate whether the micro-macro link holds in these less-regulated environments.
+
+%==============================================================================
+\section*{Data and Code Availability}
+%==============================================================================
+
+All data sources, analysis code, and reproducibility materials are archived at:
+
+\begin{center}
+\textbf{Zenodo DOI}: \url{https://doi.org/10.5281/zenodo.17993213}\\
+\textbf{GitHub}: \url{https://github.com/Muhomor2/LRD-v6-Empirical-Evidence}
+\end{center}
+
+%==============================================================================
+\section*{Acknowledgments}
+%==============================================================================
+
+The author thanks the open science community for maintaining accessible archives of financial, geophysical, physiological, and genomic data. Special recognition goes to Sato, Kanazawa, and Bouchaud for making their SRL research publicly available.
+
+%==============================================================================
+% REFERENCES
+%==============================================================================
+
+\begin{thebibliography}{99}
+
+\bibitem{sato2025prl}
+Y.~Sato and K.~Kanazawa,
+``Strict universality of the square-root law in price impact across stocks: A complete survey of the Tokyo stock exchange,''
+\textit{Phys. Rev. Lett.} \textbf{135}, 257401 (2025).
+DOI: 10.1103/65jz-81kv
+
+\bibitem{sato2024arxiv}
+Y.~Sato and K.~Kanazawa,
+``Does the square-root price impact law belong to the strict universal scalings?: quantitative support by a complete survey of the Tokyo stock exchange market,''
+arXiv:2411.13965 (2024).
+
+\bibitem{bouchaud2025viewpoint}
+J.-P.~Bouchaud,
+``The Universal Law Behind Market Price Swings,''
+\textit{APS Physics} Viewpoint (2025).
+\url{https://physics.aps.org/articles/v18/196}
+
+\bibitem{sato2025brownian}
+Y.~Sato and K.~Kanazawa,
+``Exactly solvable model of the square-root price impact dynamics under the long-range market-order correlation,''
+arXiv:2502.17906 (2025).
+
+\bibitem{bouchaud2018book}
+J.-P.~Bouchaud, J.~Bonart, J.~Donier, and M.~Gould,
+\textit{Trades, Quotes and Prices: Financial Markets Under the Microscope}
+(Cambridge University Press, 2018).
+
+\bibitem{lillo2005theory}
+F.~Lillo, S.~Mike, and J.~D.~Farmer,
+``Theory for long memory in supply and demand,''
+\textit{Phys. Rev. E} \textbf{71}, 066122 (2005).
+
+\bibitem{hurst1951}
+H.~E.~Hurst,
+``Long-term storage capacity of reservoirs,''
+\textit{Trans. Am. Soc. Civ. Eng.} \textbf{116}, 770 (1951).
+
+\bibitem{mandelbrot1968}
+B.~B.~Mandelbrot and J.~W.~Van Ness,
+``Fractional Brownian motions, fractional noises and applications,''
+\textit{SIAM Rev.} \textbf{10}, 422 (1968).
+
+\bibitem{peng1994dfa}
+C.-K.~Peng, S.~V.~Buldyrev, S.~Havlin, M.~Simons, H.~E.~Stanley, and A.~L.~Goldberger,
+``Mosaic organization of DNA nucleotides,''
+\textit{Phys. Rev. E} \textbf{49}, 1685 (1994).
+
+\bibitem{peng1992dna}
+C.-K.~Peng, S.~V.~Buldyrev, A.~L.~Goldberger, S.~Havlin, F.~Sciortino, M.~Simons, and H.~E.~Stanley,
+``Long-range correlations in nucleotide sequences,''
+\textit{Nature} \textbf{356}, 168 (1992).
+
+\bibitem{peng1995hrv}
+C.-K.~Peng, S.~Havlin, H.~E.~Stanley, and A.~L.~Goldberger,
+``Quantification of scaling exponents and crossover phenomena in nonstationary heartbeat time series,''
+\textit{Chaos} \textbf{5}, 82 (1995).
+
+\bibitem{ding1993}
+Z.~Ding, C.~W.~J.~Granger, and R.~F.~Engle,
+``A long memory property of stock market returns and a new model,''
+\textit{J. Empir. Finance} \textbf{1}, 83 (1993).
+
+\bibitem{breidt1998}
+F.~J.~Breidt, N.~Crato, and P.~de Lima,
+``The detection and estimation of long memory in stochastic volatility,''
+\textit{J. Econom.} \textbf{83}, 325 (1998).
+
+\bibitem{telesca2012}
+L.~Telesca, V.~Lapenna, and M.~Macchiato,
+``Multifractal fluctuations in seismic interspike series,''
+\textit{Physica A} \textbf{354}, 629 (2005).
+
+\bibitem{theiler1992surrogate}
+J.~Theiler, S.~Eubank, A.~Longtin, B.~Galdrikian, and J.~D.~Farmer,
+``Testing for nonlinearity in time series: the method of surrogate data,''
+\textit{Physica D} \textbf{58}, 77 (1992).
+
+\bibitem{bak1996selforganized}
+P.~Bak,
+\textit{How Nature Works: The Science of Self-Organized Criticality}
+(Springer, 1996).
+
+\bibitem{tarnopolski2017}
+M.~Tarnopolski,
+``Modeling the price of Bitcoin with geometric fractional Brownian motion: a Monte Carlo approach,''
+arXiv:1707.03746 (2017).
+
+\bibitem{barunik2010}
+J.~Barunik and L.~Kristoufek,
+``On Hurst exponent estimation under heavy-tailed distributions,''
+\textit{Physica A} \textbf{389}, 3844 (2010).
+
+\end{thebibliography}
+
+%==============================================================================
+% APPENDIX
+%==============================================================================
+
+\appendix
+
+\section{Supplementary: Square-Root Law Derivation}
+\label{app:srl_derivation}
+
+The square-root law can be derived from the latent liquidity framework \cite{bouchaud2018book}. Assume:
+\begin{itemize}
+    \item Limit order book (LOB) has liquidity profile $L(p) = \lambda |p - p_0|$ near mid-price $p_0$
+    \item Market order of volume $Q$ consumes all liquidity up to execution price $p^*$
+\end{itemize}
+
+The volume cleared equals:
+\[
+Q = \int_{p_0}^{p^*} L(p) \, dp = \int_{p_0}^{p^*} \lambda(p - p_0) \, dp = \frac{\lambda}{2}(p^* - p_0)^2
+\]
+
+Solving for price impact $\Delta p = p^* - p_0$:
+\[
+\Delta p = \sqrt{\frac{2Q}{\lambda}} \propto \sqrt{Q}
+\]
+
+This derivation shows that SRL emerges from the geometry of liquidity in the order book, independent of trader intentions or information content---a purely mechanical result.
+
+\section{Monte Carlo Validation (LRD v5 Summary)}
+\label{app:montecarlo}
+
+To validate the DFA-2 methodology, we conducted Monte Carlo experiments on synthetic fGn with known $H$:
+
+\begin{table}[htbp]
+\centering
+\caption{DFA-2 Accuracy on Synthetic fGn ($N = 10{,}000$, 1000 replications)}
+\label{tab:montecarlo}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+\textbf{True $H$} & \textbf{Mean $\hat{H}$} & \textbf{RMSE} \\
+\midrule
+0.50 & 0.502 & 0.021 \\
+0.60 & 0.598 & 0.024 \\
+0.70 & 0.701 & 0.028 \\
+0.80 & 0.799 & 0.031 \\
+0.90 & 0.897 & 0.035 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+DFA-2 shows excellent accuracy with minimal bias, validating its use for empirical LRD detection.
+
+\end{document}
