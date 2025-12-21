@@ -1,7 +1,5 @@
 # README Addition for v6.0.1
 
-Add this section to the end of your existing README.md:
-
 ---
 
 ## v6.0.1 Addenda (Microstructure Universality)
