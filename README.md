@@ -192,6 +192,30 @@ LRD-v6-Empirical-Evidence/
 4. Kantelhardt JW et al. (2002). Multifractal detrended fluctuation analysis of nonstationary time series. Physica A.
 
 ---
+README Addition for v6.0.1
+
+v6.0.1 Addenda (Microstructure Universality)
+This release adds two short addenda providing theoretical context for the empirical findings:
+ADDENDUM_THEORY.md
+Microstructure-to-macro interpretation linking Bitcoin volatility memory to scale-invariant market mechanisms. Includes discussion of AI forecasting relevance and the separation of returns vs volatility proxies.
+ADDENDUM_SRL_UNIVERSALITY.md
+Square-root impact law (SRL) as a cross-market universality anchor. Primary sources:
+
+Sato & Kanazawa, Phys. Rev. Lett. 135, 257401 (2025)
+arXiv:2411.13965 (full methodology)
+APS Physics Viewpoint by Bouchaud
+
+What Hasn't Changed
+These notes do not change the falsifiable empirical protocol:
+
+DFA-2 scaling estimation
+Block-bootstrap confidence intervals
+Phase-randomized surrogate tests
+Scale-range sensitivity checks
+
+New References
+SourceTypeLinkSato & Kanazawa (2025)PRL 135, 257401DOISato & Kanazawa (2024)arXiv preprint2411.13965Bouchaud (2025)APS Viewpointphysics.aps.org
+---
 
 ## License
 
