@@ -1,18 +1,22 @@
 cff-version: 1.2.0
-message: "If you use this software or derived results, please cite it as below."
-title: "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory"
+message: "If you use this software, please cite it as below."
 type: software
+title: "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory"
+version: "6.0.1"
+date-released: "2025-12-19"
 authors:
-  - family-names: Chechelnitsky
-    given-names: Igor
+  - family-names: "Chechelnitsky"
+    given-names: "Igor"
     orcid: "https://orcid.org/0009-0007-4607-1946"
     affiliation: "Independent Researcher, Ashkelon, Israel"
-version: "6.0.0"
-date-released: "2025-12-19"
-license: "CC-BY-4.0"
 repository-code: "https://github.com/Muhomor2/LRD-v6-Empirical-Evidence"
-url: "https://zenodo.org/records/XXXXXXX"
-doi: "10.5281/zenodo.XXXXXXX"
+url: "https://doi.org/10.5281/zenodo.17993212"
+abstract: >-
+  Reproducible pipeline and manuscript demonstrating empirical long-range 
+  dependence / fractal memory across multiple domains (Bitcoin/crypto volatility, 
+  earthquake activity, physiology/HRV, genomics) using DFA-2, bootstrap confidence 
+  intervals, and phase-randomized surrogate tests. v6.0.1 adds theoretical addenda 
+  linking microstructure universality (square-root law) to macroscopic memory signals.
 keywords:
   - long-range dependence
   - fractal memory
@@ -25,19 +29,19 @@ keywords:
   - HRV
   - genomics
   - time series analysis
-abstract: >-
-  Reproducible pipeline and manuscript demonstrating empirical 
-  long-range dependence / fractal memory across multiple domains
-  (Bitcoin/crypto volatility, earthquake activity, physiology/HRV, 
-  genomics) using DFA-2, bootstrap confidence intervals, and 
-  phase-randomized surrogate tests. This package extends LRD v5 
-  (Monte-Carlo validation on synthetic fGn) with real-world 
-  empirical evidence.
+  - market microstructure
+  - square-root law
+license: CC-BY-4.0
 references:
-  - type: software
+  - type: article
     authors:
-      - family-names: Chechelnitsky
-        given-names: Igor
-    title: "LRD v5 – Long-Range Dependence and Hurst Exponent Monte Carlo Validation"
+      - family-names: "Sato"
+        given-names: "Yuki"
+      - family-names: "Kanazawa"
+        given-names: "Kiyoshi"
+    title: "Strict universality of the square-root law in price impact across stocks: A complete survey of the Tokyo stock exchange"
+    journal: "Physical Review Letters"
+    volume: 135
+    pages: "257401"
     year: 2025
-    doi: "10.5281/zenodo.17800770"
+    doi: "10.1103/65jz-81kv"

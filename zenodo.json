@@ -1,57 +1,44 @@
 {
-  "title": "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory (Multi-domain real-world datasets)",
-  "upload_type": "software",
-  "publication_type": "workingpaper",
-  "description": "<p><strong>Companion to:</strong> <a href='https://zenodo.org/records/17800770'>LRD v5 – Monte Carlo Validation</a> (DOI: 10.5281/zenodo.17800770)</p><p>This release extends the synthetic Monte-Carlo validation (LRD v5) with a <strong>cross-domain empirical evidence layer</strong>. Using a conservative DFA-2 + block-bootstrap + phase-randomized surrogate test pipeline, we demonstrate that fractal memory signatures arise in real systems across multiple domains:</p><ul><li><strong>Finance/Crypto</strong>: Bitcoin volatility clustering (|log-returns| show H > 0.5 while raw returns show H ≈ 0.5)</li><li><strong>Geophysics</strong>: Earthquake activity clustering (USGS catalog)</li><li><strong>Physiology</strong>: Heart rate variability RR intervals (PhysioNet)</li><li><strong>Genomics</strong>: DNA sequence correlations (NCBI GenBank)</li></ul><p>The program is <strong>falsifiable and audit-driven</strong>: we separate returns from volatility, report uncertainty via block bootstrap CI, test against phase-randomized surrogates, and document dataset provenance and licensing constraints.</p><p><strong>AI Relevance:</strong> This work provides a reproducible benchmark for AI forecasting and agentic decision systems operating under persistent risk dynamics in financial markets.</p><p>Raw third-party datasets are not redistributed; the package ships code, documentation, and example outputs.</p>",
-  "creators": [
-    {
-      "name": "Chechelnitsky, Igor",
-      "affiliation": "Independent Researcher, Ashkelon, Israel",
-      "orcid": "0009-0007-4607-1946"
-    }
-  ],
-  "keywords": [
-    "long-range dependence",
-    "fractal memory",
-    "Hurst exponent",
-    "DFA",
-    "detrended fluctuation analysis",
-    "Bitcoin",
-    "volatility clustering",
-    "earthquakes",
-    "HRV",
-    "heart rate variability",
-    "genomics",
-    "time series analysis",
-    "Monte Carlo",
-    "empirical validation"
-  ],
-  "license": "CC-BY-4.0",
-  "version": "6.0.0",
-  "language": "eng",
-  "notes": "Third-party data sources and their licenses are documented in docs/DATA_SOURCES.md and docs/THIRD_PARTY_NOTICES.md. This package ships only code and derived outputs by default. See the companion package LRD v5 (DOI: 10.5281/zenodo.17800770) for synthetic Monte-Carlo validation.",
-  "related_identifiers": [
-    {
-      "identifier": "10.5281/zenodo.17800770",
-      "relation": "continues",
-      "resource_type": "software"
-    },
-    {
-      "identifier": "https://github.com/Muhomor2/LRD-v6-Empirical-Evidence",
-      "relation": "isSupplementTo",
-      "resource_type": "software"
-    }
-  ],
-  "subjects": [
-    {
-      "term": "Time series analysis",
-      "scheme": "url",
-      "identifier": "https://en.wikipedia.org/wiki/Time_series"
-    },
-    {
-      "term": "Long-range dependence",
-      "scheme": "url", 
-      "identifier": "https://en.wikipedia.org/wiki/Long-range_dependence"
-    }
-  ]
+    "title": "LRD v6: Empirical Evidence for Long-Range Dependence / Fractal Memory",
+    "version": "V6.0.1",
+    "description": "<p>Reproducible pipeline and manuscript demonstrating empirical long-range dependence / fractal memory across multiple domains (Bitcoin/crypto volatility, earthquake activity, physiology/HRV, genomics) using DFA-2, bootstrap confidence intervals, and phase-randomized surrogate tests. This package extends LRD v5 (Monte-Carlo validation on synthetic fGn) with real-world empirical evidence.</p><p><strong>v6.0.1 Update:</strong> Added theoretical addenda linking the macroscopic volatility-memory signal to modern market microstructure universality results, including high-precision evidence for the square-root law (SRL) of price impact across all liquid stocks and traders on the Tokyo Stock Exchange (Sato &amp; Kanazawa, <em>Phys. Rev. Lett.</em> <strong>135</strong>, 257401, 2025). The SRL demonstrates that universal power laws emerge in financial markets from microscopic agent aggregation — analogous to critical phenomena in physics. This provides a mechanistic anchor for interpreting cross-market fractal memory.</p><p><strong>Audit Protocol:</strong> DFA-2 scaling estimation + block-bootstrap confidence intervals + phase-randomized surrogate falsification + scale-range sensitivity checks.</p>",
+    "upload_type": "software",
+    "creators": [
+        {
+            "name": "Chechelnitsky, Igor",
+            "affiliation": "Independent Researcher, Ashkelon, Israel",
+            "orcid": "0009-0007-4607-1946"
+        }
+    ],
+    "keywords": [
+        "long-range dependence",
+        "fractal memory",
+        "Hurst exponent",
+        "DFA",
+        "detrended fluctuation analysis",
+        "Bitcoin",
+        "volatility clustering",
+        "earthquakes",
+        "HRV",
+        "genomics",
+        "time series analysis",
+        "market microstructure",
+        "square-root law",
+        "econophysics"
+    ],
+    "license": "CC-BY-4.0",
+    "related_identifiers": [
+        {
+            "identifier": "https://github.com/Muhomor2/LRD-v6-Empirical-Evidence",
+            "relation": "isSupplementTo",
+            "resource_type": "software"
+        }
+    ],
+    "references": [
+        "Sato, Y., & Kanazawa, K. (2025). Strict universality of the square-root law in price impact across stocks: A complete survey of the Tokyo stock exchange. Physical Review Letters, 135, 257401. DOI: 10.1103/65jz-81kv",
+        "Sato, Y., & Kanazawa, K. (2024). Does the square-root price impact law belong to the strict universal scalings?: quantitative support by a complete survey of the Tokyo stock exchange market. arXiv:2411.13965.",
+        "Bouchaud, J.-P. (2025). The Universal Law Behind Market Price Swings. APS Physics (Viewpoint). https://physics.aps.org/articles/v18/196",
+        "Sato, Y., & Kanazawa, K. (2025). Exactly solvable model of the square-root price impact dynamics under the long-range market-order correlation. arXiv:2502.17906.",
+        "Bouchaud, J.-P., Bonart, J., Donier, J., & Gould, M. (2018). Trades, Quotes and Prices: Financial Markets Under the Microscope. Cambridge University Press."
+    ]
 }
