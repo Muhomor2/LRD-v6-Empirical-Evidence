@@ -12,7 +12,7 @@
 
 ## Abstract
 
-This package extends **LRD v5** (Monte-Carlo validation on synthetic fGn) with a **reproducible, multi-domain empirical validation** of long-range dependence (LRD) / fractal memory using **real-world datasets**.
+This package extends **LRD v5** (Monte-Carlo  validation on synthetic fGn) with a **reproducible, multi-domain empirical validation** of long-range dependence (LRD) / fractal memory using **real-world datasets**.
 
 **Central Claim (Falsifiable)**: There exist real-world time series for which a conservative DFA-2 pipeline yields scaling exponents consistent with LRD beyond what is expected from (a) simple trends, (b) short-memory ARMA structure, or (c) preserved-spectrum surrogates.
 
